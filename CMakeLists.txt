@@ -41,10 +41,14 @@ include_directories(
 
 ## Declare cpp executables
 add_executable(rpexplainer src/RPExplainer.cpp)
+add_executable(xaipinterface src/ExplanationInterface.cpp)
+
 add_dependencies(rpexplainer ${catkin_EXPORTED_TARGETS})
+add_dependencies(xaipinterface ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries against which to link a library or executable target
 target_link_libraries(rpexplainer ${catkin_LIBRARIES})
+target_link_libraries(xaipinterface ${catkin_LIBRARIES})
 
 #############
 ## Install ##
