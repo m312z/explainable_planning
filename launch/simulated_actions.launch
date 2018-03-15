@@ -1,6 +1,9 @@
 <!-- ROSPlan turtlebot demo; requires turtlebot_gazebo -->
 <launch>
 
+	<!-- arguments -->
+	<arg name="domain"	default="$(find rosplan_demos)/common/domain_turtlebot.pddl" />
+	
 	<!-- scene database (MongoDB) -->
 	<include file="$(find mongodb_store)/launch/mongodb_store.launch">
 		<arg name="db_path" value="$(find rosplan_knowledge_base)/common/mongoDB/"/>
@@ -8,7 +11,7 @@
 
 	<!-- knowledge base -->
 	<node name="rosplan_knowledge_base" pkg="rosplan_knowledge_base" type="knowledgeBase" respawn="false" output="screen">
-		<param name="domain_path" value="$(find rosplan_demos)/common/domain_turtlebot.pddl" />
+		<param name="domain_path" value="$(arg domain)" />
 		<param name="initialState_path" value="$(find rosplan_demos)/common/problem_turtlebot.pddl" />
 	    <param name="database_path" value="$(find rosplan_knowledge_base)/common/mongoDB/" />
 		<!-- conditional planning flags -->
@@ -17,7 +20,7 @@
 
 	<!-- problem generation -->
 	<node name="rosplan_problem_interface" pkg="rosplan_planning_system" type="problemInterface" respawn="false" output="screen">
-		<param name="domain_path" value="$(find rosplan_demos)/common/domain_turtlebot.pddl" />
+		<param name="domain_path" value="$(arg domain)" />
 		<param name="problem_path" value="$(find rosplan_planning_system)/common/problem.pddl" />
 		<param name="problem_topic" value="problem_instance" />
 	</node>
@@ -33,7 +36,7 @@
 		<param name="planner_topic" value="planner_output" />
 
 		<!-- directory for files -->
-		<param name="domain_path" value="$(find rosplan_demos)/common/domain_turtlebot.pddl" />
+		<param name="domain_path" value="$(arg domain)" />
 		<param name="problem_path" value="$(find rosplan_planning_system)/common/problem.pddl" />
 		<param name="data_path" value="$(find rosplan_planning_system)/common/" />
 
