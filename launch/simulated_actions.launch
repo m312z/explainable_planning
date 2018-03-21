@@ -12,7 +12,7 @@
 	<!-- knowledge base -->
 	<node name="rosplan_knowledge_base" pkg="rosplan_knowledge_base" type="knowledgeBase" respawn="false" output="screen">
 		<param name="domain_path" value="$(arg domain)" />
-		<param name="initialState_path" value="$(find rosplan_demos)/common/problem_turtlebot.pddl" />
+		<param name="problem_path" value="$(find rosplan_demos)/common/problem_turtlebot.pddl" />
 	    <param name="database_path" value="$(find rosplan_knowledge_base)/common/mongoDB/" />
 		<!-- conditional planning flags -->
 		<param name="use_unknowns" value="False" />
