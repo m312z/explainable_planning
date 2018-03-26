@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 2.8.11)
 project(explainable_planning)
 
 ## Find catkin macros and libraries
@@ -15,9 +15,23 @@ find_package(catkin REQUIRED COMPONENTS
   explainable_planning_msgs
 )
 
-find_package(Boost REQUIRED COMPONENTS
-  filesystem
-)
+find_package(Boost REQUIRED COMPONENTS filesystem)
+
+########
+## QT ##
+########
+
+set(Qt5Core_DIR "/home/michael/Qt/5.10.1/gcc_64/lib/cmake/Qt5Core")
+set(Qt5_DIR "/home/michael/Qt/5.10.1/gcc_64/lib/cmake/Qt5")
+
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# Instruct CMake to run moc automatically when needed.
+set(CMAKE_AUTOMOC ON)
+
+find_package(Qt5 COMPONENTS Core Gui Widgets PrintSupport Charts)
+
+add_definitions( -std=c++11 -fPIC)
 
 ###################################
 ## catkin specific configuration ##
@@ -37,19 +51,29 @@ catkin_package(
 ## include_directories(include)
 include_directories(
   ${catkin_INCLUDE_DIRS}
+  ${Qt5Core_INCLUDE_DIRS}
+  ${Qt5Gui_INCLUDE_DIRS}
+  ${Qt5Widgets_INCLUDE_DIRS}
+  ${Qt5PrintSupport_INCLUDE_DIRS}
   include
 )
+
+## do some qt things
+qt5_wrap_cpp(main_window_SRC include/explainable_planning/mainwindow.h)
 
 ## Declare cpp executables
 add_executable(rpexplainer src/RPExplainer.cpp)
 add_executable(xaipinterface src/ExplanationInterface.cpp)
+add_executable(main_window src/mainwindow.cpp ${main_window_SRC})
 
 add_dependencies(rpexplainer ${catkin_EXPORTED_TARGETS})
 add_dependencies(xaipinterface ${catkin_EXPORTED_TARGETS})
+add_dependencies(main_window ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries against which to link a library or executable target
 target_link_libraries(rpexplainer ${catkin_LIBRARIES})
 target_link_libraries(xaipinterface ${catkin_LIBRARIES})
+target_link_libraries(main_window ${catkin_LIBRARIES} Qt5::Core Qt5::Widgets Qt5::Charts)
 
 #############
 ## Install ##
