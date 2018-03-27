@@ -411,11 +411,11 @@
 		std::stringstream ss;
 		for(int i=0; i<plan.plan.size(); i++) {
 			ss.str("");
-			ss << i << ":\t(" << plan.plan[i].name;
+			ss << plan.plan[i].dispatch_time << ":\t(" << plan.plan[i].name;
 			for(int j=0; j<plan.plan[i].parameters.size(); j++) {
 				ss << " " << plan.plan[i].parameters[j].value;
 			}
-			ss << ")";
+			ss << ") [" << plan.plan[i].duration << "]";
 			if(expecting_initial_plan) {
 				plan_table.push_back(ss.str());
 				create_Initial_Plan_Widget(initial_plan, initial_Plan_Layout);
@@ -436,11 +436,11 @@
 		std::stringstream ss;
 		for(int i=0; i<plan.plan.size(); i++) {
 			ss.str("");
-			ss << plan.plan[i].dispatch_time << ":\t(" << plan.plan[i].name;
+			ss << "(" << plan.plan[i].name;
 			for(int j=0; j<plan.plan[i].parameters.size(); j++) {
 				ss << " " << plan.plan[i].parameters[j].value;
 			}
-			ss << ") [" << plan.plan[i].duration << "]";
+			ss << ")";
 			action_table.push_back(ss.str());
 		}
 	}
