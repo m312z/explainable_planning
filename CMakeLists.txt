@@ -21,8 +21,9 @@ find_package(Boost REQUIRED COMPONENTS filesystem)
 ## QT ##
 ########
 
-set(Qt5Core_DIR "/home/michael/Qt/5.10.1/gcc_64/lib/cmake/Qt5Core")
-set(Qt5_DIR "/home/michael/Qt/5.10.1/gcc_64/lib/cmake/Qt5")
+# Installed 5.10.1 from https://www.qt.io as Ubuntu 14.04 has 5.2 as default
+# set(Qt5Core_DIR "/home/michael/Qt/5.10.1/gcc_64/lib/cmake/Qt5Core")
+# set(Qt5_DIR "/home/michael/Qt/5.10.1/gcc_64/lib/cmake/Qt5")
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
