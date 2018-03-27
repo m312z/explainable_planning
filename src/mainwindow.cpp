@@ -436,11 +436,11 @@
 		std::stringstream ss;
 		for(int i=0; i<plan.plan.size(); i++) {
 			ss.str("");
-			ss << i << ":\t(" << plan.plan[i].name;
+			ss << plan.plan[i].dispatch_time << ":\t(" << plan.plan[i].name;
 			for(int j=0; j<plan.plan[i].parameters.size(); j++) {
 				ss << " " << plan.plan[i].parameters[j].value;
 			}
-			ss << ")";
+			ss << ") [" << plan.plan[i].duration << "]";
 			action_table.push_back(ss.str());
 		}
 	}
