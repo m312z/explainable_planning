@@ -75,13 +75,3 @@ add_dependencies(main_window ${catkin_EXPORTED_TARGETS})
 target_link_libraries(rpexplainer ${catkin_LIBRARIES})
 target_link_libraries(xaipinterface ${catkin_LIBRARIES})
 target_link_libraries(main_window ${catkin_LIBRARIES} Qt5::Core Qt5::Widgets Qt5::Charts)
-
-#############
-## Install ##
-#############
-
-#install(TARGETS rpmovebase
-#  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-#)
