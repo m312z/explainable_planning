@@ -1,3 +1,4 @@
+#include <iostream>
 #include "explainable_planning/mainwindow.h"
 #include "explainable_planning/plan_table.h"
 
@@ -11,26 +12,41 @@
 		QWidget *central_Widget = new QWidget;
 		setCentralWidget(central_Widget);
 
+		// init tables
+		alt_plan_id =0 ;
+		plan_table_all.push_back(std::list<std::string>());
+
+	
+
 		// create initial plan widget
 		side_Bar = new QFrame();
+		side_Bar->setFrameRect(QRect(0,0,250,250));
+		
 		initial_Plan_Stack = new QStackedWidget;
 		initial_Plan_Layout = new QVBoxLayout;
-		initial_plan = new QGroupBox("InitialPlan");
+		
+		initial_Plan = new QGroupBox("InitialPlan");
+		initial_Plan->setFlat(true);
+		
 
-		side_Bar->setStyleSheet("background-color:white;");
+		side_Bar->setStyleSheet("background-color: BlanchedAlmond ;");
 		initial_Plan_Stack->setStyleSheet("background-color: red;");
-		initial_plan->setStyleSheet("background-color: BlanchedAlmond ;");
+		initial_Plan->setStyleSheet("background-color: BlanchedAlmond; ");
+		
+	
 
-		create_Initial_Plan_Widget(initial_plan, initial_Plan_Layout);
-
-		// create generate and cost plan buttons	
+		create_Initial_Plan_Widget(initial_Plan, initial_Plan_Layout);
+	
+		// create generate and cost plan buttons
 		QGroupBox *hGroupBox = new QGroupBox("Buttons");
 		QHBoxLayout *bplanLayout = new QHBoxLayout;
 		QPushButton *generateNPlan = new QPushButton("Generate");
 		QPushButton *costNPlan = new QPushButton("Cost");
-
+		QPushButton *saveWrkSp = new QPushButton("Save Workspace");
+		generateNPlan->setGeometry(0,0,20,20);
 		generateNPlan->setStyleSheet("background-color: lightblue; Text-align: center;");
 		costNPlan->setStyleSheet("background-color: lightblue; Text-align: center;");
+		saveWrkSp->setStyleSheet("background-color: lightblue; Text-align: center;");
 
 		// add actions to buttons // C++11
 		connect(
@@ -46,11 +62,12 @@
 
 		bplanLayout->addWidget(generateNPlan, 0);
 		bplanLayout->addWidget(costNPlan, 0);
+		bplanLayout->addWidget(saveWrkSp, 0);
 		hGroupBox->setLayout(bplanLayout);
 
 		// lay out initial plan widget and buttons
 		QVBoxLayout *initial_Plan_VLayout = new QVBoxLayout;
-		initial_Plan_VLayout->addWidget(initial_plan,0,Qt::AlignLeft);
+		initial_Plan_VLayout->addWidget(initial_Plan,0,Qt::AlignLeft);
 		initial_Plan_VLayout->addWidget(hGroupBox,0,Qt::AlignLeft);
 	
 		side_Bar->setLayout(initial_Plan_VLayout);
@@ -67,10 +84,17 @@
 		QVBoxLayout *vbl = new QVBoxLayout;
 		page_Widget_Option->setLayout(vbl);
 
+		// text widget
+		text_Box = new QTextEdit("Ready to roll!", this);
+	
+
 		// new plan widget
-		QLabel *page1WidgetB = new QLabel("I will contain the new Plan");
+		alternative_Plan = new QGroupBox("Alternative Plan");
+		alternative_Plan_Layout = new QVBoxLayout();
+		alternative_Plan->setStyleSheet("background-color: AliceBlue ;");
+
+		//QLabel *page1WidgetB = new QLabel("I will contain the new Plan");
 		//other widget are a we migh use or ditch
-		QLabel *page1WidgetC = new QLabel("I am widget C");
 	
 		// charts widgets
 		charts_Box = new QGroupBox("Charts");
@@ -83,13 +107,15 @@
 		central_Layout = new QGridLayout();
 	
 		// Setup the content as stacked widgets
-		page_Widgets_Grid_Layout->addWidget(page_Widget_Option, 0, 0, 3, 1);
-		page_Widgets_Grid_Layout->addWidget(page1WidgetB, 0, 1, 1, 1);
-		page_Widgets_Grid_Layout->addWidget(page1WidgetC, 1, 1, 2, 1);
+		page_Widgets_Grid_Layout->addWidget(page_Widget_Option, 0, 0, 2, 1);
+		page_Widgets_Grid_Layout->addWidget(alternative_Plan, 0, 1, 3, 1);
+		page_Widgets_Grid_Layout->addWidget(text_Box, 2, 0, 1, 1);
 		page_Widgets_Grid_Layout->addWidget(charts_Box, 3, 0, 1, 2);
-		page_Widgets_Grid_Layout->setRowStretch(0, 3);
-		page_Widgets_Grid_Layout->setRowStretch(1, 3);
-		page_Widgets_Grid_Layout->setRowStretch(3, 2);
+		page_Widgets_Grid_Layout->setRowStretch(0, 2);
+		page_Widgets_Grid_Layout->setRowStretch(2, 1);
+		page_Widgets_Grid_Layout->setRowStretch(3, 1);
+		page_Widgets_Grid_Layout->setColumnStretch(0, 1);
+		page_Widgets_Grid_Layout->setColumnStretch(1, 1);
 		content_Page_Widgets->setLayout(page_Widgets_Grid_Layout);
 
 		other_Content_Stack->addWidget(content_Page_Widgets);
@@ -164,15 +190,19 @@
 	{
 		QLayoutItem *item;
 
-		while ((item = layout->takeAt(0))) {
-			if (item->layout()) {
-				clear_Layout(item->layout());
-				delete item->layout();
-			}
-			if (item->widget()) {
+		if (layout!=NULL)
+		{
+			std::cout <<"Cleaning\n";
+			while ((item = layout->takeAt(0))) {
+				if (item->layout()) {
+					clear_Layout(item->layout());
+					delete item->layout();
+				}
+				if (item->widget()) {
 				delete item->widget();
+				}
+				delete item;
 			}
-			delete item;
 		}
 	}
 
@@ -190,6 +220,7 @@
 		clear_Layout(bl);
 
 		QButtonGroup* group = new QButtonGroup(f);
+		
 
 		int index = 0;
 		std::vector<std::string>::iterator ait = plan_table.begin();
@@ -205,6 +236,7 @@
 			// end of C++11 code
 
 			button->setCheckable(true);
+			button->setAutoExclusive(true);
 			group->addButton(button);
 			bl->addWidget(button);
 
@@ -213,7 +245,7 @@
 	
 		group->setExclusive(true);
 
-		bl->addStretch(1);
+		bl->addStretch(2);
 		f->setLayout(bl);
 		f->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 	}
@@ -223,9 +255,27 @@
 	 */
 	void MainWindow::on_planOptionButton_clicked(std::string id)
 	{
+		std::string ac(plan_table[std::atoi(id.c_str())].c_str()); //action chosen
+		plan_table_all[alt_plan_id].push_back((std::string("Action chosen").append(ac.c_str())).c_str());
+	
+		// warn user about selection
+		text_Box->setTextColor(QColor("blue"));
+		text_Box->append("Action chosen");
+		text_Box->setTextColor(QColor("red"));
+		text_Box->setAlignment(Qt::AlignRight);
+		text_Box->append(ac.c_str());
+		text_Box->setTextColor(QColor("black"));
+		text_Box->setAlignment(Qt::AlignLeft);
+		text_Box->append("Generating options...");
+		QCoreApplication::processEvents();
+
+
 		// clear action list and layout
 		action_table.clear();
+		plan_table_alt.clear();
+		
 		clear_Layout(page_Widget_Option->layout());
+		clear_Layout(alternative_Plan->layout());
 		//page_Widget_Option->layout()->addWidget(opt);
 
 		// move execution to new state
@@ -255,7 +305,13 @@
 				this, [this, i] {on_actionOptionButton_clicked(std::to_string(i)); }
 			);
 			// end of C++11 code
+			action->setCheckable(true);
+			action->setAutoExclusive(true);
+
 		}
+		text_Box->append("Generation complete.");
+		QCoreApplication::processEvents();
+
 	}
 
 	/**
@@ -263,23 +319,143 @@
 	 */
 	void MainWindow::on_actionOptionButton_clicked(std::string id)
 	{
-		// clear action list and layout
+		std::string oc(action_table[std::atoi(id.c_str())].c_str()); //option chosen
+		plan_table_all[alt_plan_id].push_back("Alternative Plan for Option: "+oc);
+	
+		
+		// clear alternative plan list and layout
 		plan_table_alt.clear();
-		clear_Layout(page_Widget_Option->layout());
+		text_Box->setTextColor(QColor("blue"));
+		text_Box->append("Option chosen");
+		text_Box->setTextColor(QColor("red"));
+		text_Box->setAlignment(Qt::AlignRight);
+		text_Box->append(oc.c_str());
+		text_Box->setTextColor(QColor("black"));
+		text_Box->setAlignment(Qt::AlignLeft);
 
+		QCoreApplication::processEvents();
+		
+
+		
 		// move execution to new state
 		explainable_planning_msgs::IntegerChoice srv;
 		srv.request.option = std::atoi(id.c_str());
 		apply_client.call(srv);
 
 		expecting_initial_plan = false;
+		
 		generate_plan();
+		// save current alternative plan 
+		save_Alternative_Plan();
+	
+		display_Alternative_Plan();
 
-		for (int i = 0; i < plan_table_alt.size(); i++)
+	}
+
+
+	void MainWindow::display_Alternative_Plan()
+	{
+		int index = 0;
+		clear_Layout(alternative_Plan->layout());
+
+
+		std::vector<std::string>::iterator ait = plan_table_alt.begin();
+		for (; ait!=plan_table_alt.end(); ait++)
 		{
 			// TODO this is where to display the alternate plan
+			QLabel* action_label = new QLabel((*ait).c_str());
+			std::cout<< "action: "<<(*ait).c_str() <<"\n";
+			alternative_Plan_Layout->addWidget(action_label);
+
+			index++;
 		}
+		
+		alternative_Plan_Layout->addStretch(1);
+		alternative_Plan->setLayout(alternative_Plan_Layout);
+		alternative_Plan->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	}
+
+
+/**
+	 * function that when an alternative option is clicked provides the alternative plan
+	 */
+	void MainWindow::on_saveWorkspaceButton_clicked()
+	{
+		// let user know
+		text_Box->setTextColor(QColor("blue"));
+		text_Box->append("Saving Workspace");
+
+        // save workspace in 2 files
+        // file 1 plan tables 
+        // file 2 textbox content
+
+        text_Box->append("Workspace Saved");
+
+		text_Box->setTextColor(QColor("black"));
+		text_Box->setAlignment(Qt::AlignLeft);
+
+		QCoreApplication::processEvents();
+		
+
+		
+
+	}
+/*
+*  Save main plan: assumption we only have 1 main plan 
+*/
+
+	void MainWindow::save_Main_Plan()
+	{
+
+	
+		if(!plan_table.empty())
+		{
+			std::cout <<"saving Main plan \n";
+			std::vector<std::string>::iterator ait = plan_table.begin();
+
+			plan_table_all.push_back(std::list<std::string>());
+			plan_table_all[0].push_back("Main Plan : P0");
+			for (; ait!=plan_table.end(); ait++)
+			{
+				plan_table_all[0].push_back((*ait).c_str());
+			}
+			std::cout <<"saved Main plan \n";
+			// saving plan cost in cost_table
+			plan_table_cost.push_back((strtok((char *)((*(--ait)).c_str()), ":")));
+		}
+		else
+			std::cout <<"Could not save Main plan, plan_table empty \n";
+			
+	}
+
+/*
+*  Save alternative plan
+*/
+
+	void MainWindow::save_Alternative_Plan()
+	{
+
+	
+		if(!plan_table_alt.empty())
+		{
+			std::cout <<"saving Aletrnative plan n. " << alt_plan_id<<"\n";
+			std::vector<std::string>::iterator ait = plan_table_alt.begin();
+			plan_table_all.push_back(std::list<std::string>());
+			for (; ait!=plan_table_alt.end(); ait++)
+			{
+				plan_table_all[alt_plan_id].push_back((*ait).c_str());
+			}
+			std::cout <<"saving Alternative plan n. "<<alt_plan_id<<" \n";
+		// saving plan cost in cost_table
+			plan_table_cost.push_back((strtok((char *)((*(--ait)).c_str()), ":")));
+	
+		}
+		else
+			std::cout <<"Could not save Alternative plan, plan_alt_table empty \n";
+		
+		alt_plan_id++; 
+	}
+
 
 /*--------*/
 /* CHARTS */
@@ -291,20 +467,38 @@
 	 */
 	void MainWindow::create_Bar_Chart(QChartView *cost_Chart)
 	{
-		QBarSet *plan0 = new QBarSet("P0");
-		QBarSet *plan1 = new QBarSet("P1");
+		std::vector<QBarSet*> bar_charts;
+		std::string pn = "P_";
+		QBarSeries *series = new QBarSeries();
+
+		int index = 0;
+		if(!plan_table_cost.empty())
+		{
+			std::vector<std::string>::iterator ait = plan_table_cost.begin();
+			for (; ait!= plan_table_cost.end(); ait++)
+			{
+				bar_charts.push_back( new QBarSet((pn+std::to_string(index)).c_str()));
+				(*(bar_charts[index])) << atoi((*ait).c_str());
+				std::cout<< "Cost of P "<< index <<" "<< atoi((*ait).c_str()) << "\n";
+				series->append(bar_charts[index]);
+				index++;
+			}
+		}
+//		QBarSet *plan0 = new QBarSet("P0");
+//		QBarSet *plan1 = new QBarSet("P1");
 	
 
-		*plan0 << 1 << 2 << 3 << 4 << 5 << 6;
-		*plan1 << 5 << 4 << 3 << 4 << 2 << 7;
+//		*plan0 << atoi(plan_table_cost[0].c_str());
+//		*plan1 << atoi(plan_table_cost[1].c_str());
+		//*plan1 << 5 << 4 << 3 << 4 << 2 << 7;
 
-		QBarSeries *series = new QBarSeries();
-		series->append(plan0);
-		series->append(plan1);
+//		QBarSeries *series = new QBarSeries();
+//		series->append(plan0);
+//		series->append(plan1);
 
 		QChart *chart = new QChart();
 		chart->addSeries(series);
-		chart->setTitle("Simple barchart example");
+		chart->setTitle("Plan Cost - Time (ms)");
 		chart->setAnimationOptions(QChart::SeriesAnimations);
 
 	
@@ -324,6 +518,9 @@
 
 	
 	}
+
+
+
 
 /*--------------*/
 /* PLACEHOLDERS */
@@ -418,7 +615,7 @@
 			ss << ") [" << plan.plan[i].duration << "]";
 			if(expecting_initial_plan) {
 				plan_table.push_back(ss.str());
-				create_Initial_Plan_Widget(initial_plan, initial_Plan_Layout);
+				create_Initial_Plan_Widget(initial_Plan, initial_Plan_Layout);
 			} else {
 				 plan_table_alt.push_back(ss.str());
 			}
@@ -449,6 +646,11 @@
 	 * Service calls to generate a new plan.
 	 */
 	void MainWindow::generate_plan() {
+		
+		text_Box->append("Generating plan ....");
+		QCoreApplication::processEvents();
+		
+
 		// generate a plan
 		std_srvs::Empty empty;
 		problem_client.call(empty);
@@ -458,9 +660,18 @@
 		parsing_client.call(empty);
 		ros::Duration(1).sleep();
 		ros::spinOnce();
-	}
+		text_Box->append("Generation completed.");
+		QCoreApplication::processEvents();
+		if(expecting_initial_plan)
+			save_Main_Plan();
+		
+		}
+
+
 
 // END MAININDOW
+
+
 
 /**
  * main method
@@ -482,6 +693,7 @@ int main(int argc, char *argv[])
 	ros::Subscriber aas = nh.subscribe(aas_topic, 1, &MainWindow::actionsCallback, &window);
 
 	// begin
+	window.setWindowState(window.windowState()^Qt::WindowMaximized);
 	window.show();
 	return app.exec();
 }
