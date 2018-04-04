@@ -21,6 +21,7 @@
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QGroupBox>
+#include <QtWidgets/QTextEdit>
 #include <QtCharts/QChartView>
 #include <QtCharts/QBarSeries>
 #include <QtCharts/QBarSet>
@@ -87,6 +88,9 @@ private:
 	void create_Actions();
 	void create_Menus();
 
+
+
+private:
 	// placeholders for now, no real action connected to them
 	QMenu *file_Menu;
 	QMenu *edit_Menu;
@@ -96,6 +100,8 @@ private:
 	QAction *print_Act;
 	QAction *exit_Act;
 
+	// Utilty - Text Widget
+	QTextEdit	*text_Box;
 
 	// Interface is divided into two main areas:
 	// - side_Bar: which contains the initial plan
@@ -105,10 +111,13 @@ private:
 	//		* the chart widget (chartFrame), 
 	//		* a placehoder labelled for now "I am widget D" 
 
-	QGroupBox *initial_plan; //
-	QFrame *side_Bar; // widget containing the initial pal
+	QGroupBox *initial_Plan; //
+	QGroupBox *alternative_Plan; //
+	int alt_plan_id; // counter to save action plans, we assume initial pna id always 0;
+	
+	QFrame *side_Bar; // widget containing the initial plan
 	QGroupBox *page_Widget_Option; // widget containing the options
-	QGroupBox *page_Widget_AltPlan; // widget containing the options
+	//QGroupBox *page_Widget_AltPlan; // widget containing the options
 	QFrame *content_Page_Widgets; // see above
 	QGroupBox *charts_Box;  // chart widget area
 	QStackedWidget *other_Content_Stack; //stack of widgets: options, chart, new plan
@@ -118,16 +127,27 @@ private:
 	QGridLayout *page_Widgets_Grid_Layout; //layout of Optio, charts and new plan widgets
 	QGridLayout *central_Layout; // main layout containing all widgets
 	QVBoxLayout *initial_Plan_Layout; // layout containing initial plan
+	QVBoxLayout *alternative_Plan_Layout; // layout containing alternative plan
 
 	// function to read initial plan "instructions" and create initial plan widget
 	void create_Initial_Plan_Widget(QGroupBox *f, QBoxLayout *bl);
 
+	// saves initial plan
+	void save_Main_Plan();
+
+	//save alternative plan
+	void save_Alternative_Plan();
+	// display alternative plan
+	void display_Alternative_Plan();
 	// function that when an instruction in initial plan is clicked provides alternative options within the Options widget
 	void on_planOptionButton_clicked(std::string id);
 	void on_actionOptionButton_clicked(std::string id);
+	void on_saveWorkspaceButton_clicked();
 
 	// utility function to clear a layout when content is updated
 	void clear_Layout(QLayout *layout);
+
+	
 
 	void create_Bar_Chart(QChartView *cost_Chart);
 
