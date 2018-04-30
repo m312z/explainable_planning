@@ -11,7 +11,6 @@ find_package(catkin REQUIRED COMPONENTS
   diagnostic_msgs
   rosplan_dispatch_msgs
   rosplan_knowledge_msgs
-  rosplan_planning_system
   explainable_planning_msgs
 )
 
@@ -22,8 +21,8 @@ find_package(Boost REQUIRED COMPONENTS filesystem)
 ########
 
 # Installed 5.10.1 from https://www.qt.io as Ubuntu 14.04 has 5.2 as default
-# set(Qt5Core_DIR "/home/michael/Qt/5.10.1/gcc_64/lib/cmake/Qt5Core")
-# set(Qt5_DIR "/home/michael/Qt/5.10.1/gcc_64/lib/cmake/Qt5")
+set(Qt5Core_DIR "/home/michael/Qt/5.10.1/gcc_64/lib/cmake/Qt5Core")
+set(Qt5_DIR "/home/michael/Qt/5.10.1/gcc_64/lib/cmake/Qt5")
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -41,7 +40,7 @@ add_definitions( -std=c++11 -fPIC)
 ## Declare things to be passed to dependent projects
 catkin_package(
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp rospy std_msgs std_srvs actionlib rosplan_dispatch_msgs rosplan_knowledge_msgs diagnostic_msgs rosplan_planning_system explainable_planning_msgs
+  CATKIN_DEPENDS roscpp rospy std_msgs std_srvs actionlib rosplan_dispatch_msgs rosplan_knowledge_msgs diagnostic_msgs explainable_planning_msgs
   DEPENDS
 )
 
