@@ -16,8 +16,6 @@
   <build_depend>diagnostic_msgs</build_depend>
   <build_depend>rosplan_dispatch_msgs</build_depend>
   <build_depend>rosplan_knowledge_msgs</build_depend>
-  <build_depend>rosplan_planning_system</build_depend>
-  <build_depend>actionlib</build_depend>
   <build_depend>explainable_planning_msgs</build_depend>
 
   <run_depend>rospy</run_depend>
@@ -27,8 +25,6 @@
   <run_depend>diagnostic_msgs</run_depend>
   <run_depend>rosplan_dispatch_msgs</run_depend>
   <run_depend>rosplan_knowledge_msgs</run_depend>
-  <run_depend>rosplan_planning_system</run_depend>
-  <run_depend>actionlib</run_depend>
   <run_depend>explainable_planning_msgs</run_depend>
 
   <export></export>

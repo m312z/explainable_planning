@@ -7,7 +7,6 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   std_srvs
-  actionlib
   diagnostic_msgs
   rosplan_dispatch_msgs
   rosplan_knowledge_msgs
@@ -40,7 +39,7 @@ add_definitions( -std=c++11 -fPIC)
 ## Declare things to be passed to dependent projects
 catkin_package(
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS roscpp rospy std_msgs std_srvs actionlib rosplan_dispatch_msgs rosplan_knowledge_msgs diagnostic_msgs explainable_planning_msgs
+  CATKIN_DEPENDS roscpp rospy std_msgs std_srvs rosplan_dispatch_msgs rosplan_knowledge_msgs diagnostic_msgs explainable_planning_msgs
   DEPENDS
 )
 
