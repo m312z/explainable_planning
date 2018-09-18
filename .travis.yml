@@ -4,7 +4,7 @@ language: generic
 
 env:
   global:
-    - ROS_DISTRO="kinetic"
+    - ROS_DISTRO=kinetic
     - UPSTREAM-WORKSPACE=file
     - ROSINSTALL_FILENAME=.travis.rosinstall
 
