@@ -1,0 +1,13 @@
+sudo: required
+dist: xenial
+language: generic
+
+env:
+  global:
+    - ROS_DISTRO="kinetic"
+    - UPSTREAM-WORKSPACE=file
+
+install:
+  - git clone --depth=1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci
+script:
+  - .industrial_ci/travis.sh
