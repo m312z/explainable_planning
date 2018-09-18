@@ -6,7 +6,7 @@
 	</node>
 
 	<!-- arguments -->
-	<arg name="domain"	default="$(find rosplan_demos)/common/domain_rover_time.pddl" />
+	<arg name="domain"	default="$(find explainable_planning)/common/domain_auv.pddl" />
 	
 	<!-- scene database (MongoDB) -->
 	<include file="$(find mongodb_store)/launch/mongodb_store.launch">
@@ -16,7 +16,7 @@
 	<!-- knowledge base -->
 	<node name="rosplan_knowledge_base" pkg="rosplan_knowledge_base" type="knowledgeBase" respawn="false" output="screen">
 		<param name="domain_path" value="$(arg domain)" />
-		<param name="problem_path" value="$(find rosplan_demos)/common/pfile03_rover_time.pddl" />
+		<param name="problem_path" value="$(find explainable_planning)/common/problem_auv.pddl" />
 	    <param name="database_path" value="$(find rosplan_knowledge_base)/common/mongoDB/" />
 		<!-- conditional planning flags -->
 		<param name="use_unknowns" value="False" />
@@ -62,53 +62,13 @@
 	</node>
 
 	<!-- sim actions -->
-	<node name="rosplan_interface_navigate" pkg="rosplan_planning_system" type="simulatedAction" respawn="false" output="screen">
-		<param name="pddl_action_name" value="navigate" />
+	<node name="rosplan_interface_do_hover" pkg="rosplan_planning_system" type="simulatedAction" respawn="false" output="screen">
+		<param name="pddl_action_name" value="do_hover" />
 		<param name="action_dispatch_topic" value="/rosplan_plan_explainer/action_dispatch" />
 		<param name="action_feedback_topic" value="/rosplan_plan_explainer/action_feedback" />
 	</node>
-	<node name="rosplan_interface_recharge" pkg="rosplan_planning_system" type="simulatedAction" respawn="false" output="screen">
-		<param name="pddl_action_name" value="recharge" />
-		<param name="action_dispatch_topic" value="/rosplan_plan_explainer/action_dispatch" />
-		<param name="action_feedback_topic" value="/rosplan_plan_explainer/action_feedback" />
-	</node>
-	<node name="rosplan_interface_sample_soil" pkg="rosplan_planning_system" type="simulatedAction" respawn="false" output="screen">
-		<param name="pddl_action_name" value="sample_soil" />
-		<param name="action_dispatch_topic" value="/rosplan_plan_explainer/action_dispatch" />
-		<param name="action_feedback_topic" value="/rosplan_plan_explainer/action_feedback" />
-	</node>
-	<node name="rosplan_interface_sample_rock" pkg="rosplan_planning_system" type="simulatedAction" respawn="false" output="screen">
-		<param name="pddl_action_name" value="sample_rock" />
-		<param name="action_dispatch_topic" value="/rosplan_plan_explainer/action_dispatch" />
-		<param name="action_feedback_topic" value="/rosplan_plan_explainer/action_feedback" />
-	</node>
-	<node name="rosplan_interface_drop" pkg="rosplan_planning_system" type="simulatedAction" respawn="false" output="screen">
-		<param name="pddl_action_name" value="drop" />
-		<param name="action_dispatch_topic" value="/rosplan_plan_explainer/action_dispatch" />
-		<param name="action_feedback_topic" value="/rosplan_plan_explainer/action_feedback" />
-	</node>
-	<node name="rosplan_interface_calibrate" pkg="rosplan_planning_system" type="simulatedAction" respawn="false" output="screen">
-		<param name="pddl_action_name" value="calibrate" />
-		<param name="action_dispatch_topic" value="/rosplan_plan_explainer/action_dispatch" />
-		<param name="action_feedback_topic" value="/rosplan_plan_explainer/action_feedback" />
-	</node>
-	<node name="rosplan_interface_take_image" pkg="rosplan_planning_system" type="simulatedAction" respawn="false" output="screen">
-		<param name="pddl_action_name" value="take_image" />
-		<param name="action_dispatch_topic" value="/rosplan_plan_explainer/action_dispatch" />
-		<param name="action_feedback_topic" value="/rosplan_plan_explainer/action_feedback" />
-	</node>
-	<node name="rosplan_interface_communicate_soil_data" pkg="rosplan_planning_system" type="simulatedAction" respawn="false" output="screen">
-		<param name="pddl_action_name" value="communicate_soil_data" />
-		<param name="action_dispatch_topic" value="/rosplan_plan_explainer/action_dispatch" />
-		<param name="action_feedback_topic" value="/rosplan_plan_explainer/action_feedback" />
-	</node>
-	<node name="rosplan_interface_communicate_rock_data" pkg="rosplan_planning_system" type="simulatedAction" respawn="false" output="screen">
-		<param name="pddl_action_name" value="communicate_rock_data" />
-		<param name="action_dispatch_topic" value="/rosplan_plan_explainer/action_dispatch" />
-		<param name="action_feedback_topic" value="/rosplan_plan_explainer/action_feedback" />
-	</node>
-	<node name="rosplan_interface_communicate_image_data" pkg="rosplan_planning_system" type="simulatedAction" respawn="false" output="screen">
-		<param name="pddl_action_name" value="communicate_image_data" />
+	<node name="rosplan_interface_complete_mission" pkg="rosplan_planning_system" type="simulatedAction" respawn="false" output="screen">
+		<param name="pddl_action_name" value="complete_mission" />
 		<param name="action_dispatch_topic" value="/rosplan_plan_explainer/action_dispatch" />
 		<param name="action_feedback_topic" value="/rosplan_plan_explainer/action_feedback" />
 	</node>
