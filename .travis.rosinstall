@@ -1,0 +1,12 @@
+ - git:
+  uri: 'https://github.com/m312z/explainable_planning_msgs.git'
+  local-name: explainable_planning_msgs
+  version: master
+- git:
+    uri: 'https://github.com/clearpathrobotics/occupancy_grid_utils.git'
+    local-name: occupancy_grid_utils
+    version: indigo-devel
+- git:
+    uri: 'https://github.com/kcl-planning/ROSPlan.git'
+    local-name: ROSPlan
+    version: master
