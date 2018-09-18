@@ -1,10 +1,10 @@
 sudo: required
-dist: trusty
+dist: xenial
 language: generic
 
 env:
   global:
-    - ROS_DISTRO="indigo"
+    - ROS_DISTRO="kinetic"
     - UPSTREAM_WORKSPACE=file
     - ROSINSTALL_FILENAME=.travis.rosinstall
 
